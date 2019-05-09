@@ -1,0 +1,14 @@
+uuden noten lähettäminen HTTP POST -komennolla
+selain --> palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note tässä mukana Form Data, eli uuden noten viesti
+palvelin --> selain: HTTP status 302 - uudelleenohjaus
+selain lataa uudelleen muistiinpanojen sivun HTTP GET -requesteilla
+selain --> palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+palvelin --> selain: notes HTML
+selain --> palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin --> selain: main.css
+selain --> palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin --> selain: main.js
+selain suorittaa main.js
+selain --> palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin --> selain: HTTP GET data.json (JSON-muotoinen lista)
+selain suorittaa main.js:n callbackin (kun readyState == 4 & status == 200) ja tulostaa muistiinpanot käyttäjän näytölle

@@ -1,0 +1,9 @@
+vain yksi HTTP request
+selain --> palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa (JSON-dataa)
+palvelin --> selain: status 201, ei uudelleenohjausta
+selain suorittaa aiemmin ladattuun (teht. 0.5) spa.js-koodiin 201 statuksen myötä callbackin
+callback estää oletusarvoisen lähetystavan ja sivun uudelleen lataamisen
+callback luo muistiinpanon, piirtää päivitetyn listan käyttäjälle (lataamatta sivua uudelleen) ja lähettää uuden listan palvelimelle
+
+single page -menetelmä siis suorittaa koodia ensisijaisesti käyttäjän päässä (toiseen menetelmään verraten)
+tämä vähentää dataliikenteen määrää selaimen ja palvelimen välillä
