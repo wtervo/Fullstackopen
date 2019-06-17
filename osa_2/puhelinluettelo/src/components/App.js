@@ -1,22 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import axios from "axios"
 import Display from "./Display"
 import Input from "./Input"
 import Filter from "./Filter"
+import pbService from "./services/pbService"
 
 
 const App = () => {
   const [persons, setPersons] = useState([])
 
   const hook = () => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
+    pbService
+      .getAll()
+        .then(dbPersons => {
+          setPersons(dbPersons)
       })
   }
 
-  useEffect(hook, [])
+  useEffect(hook, [persons]) //improvements for the future: render just once after name has been
+  //deleted (after button press) instead of continuously observing changes in the server data
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -26,20 +27,32 @@ const App = () => {
     event.preventDefault()
     const nameObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     }
-    const similarTest = persons.find(person => person.name === newName)
-    if (similarTest) {
-      window.alert(`${newName} is already in the phonebook`)
-      setNewName("")
-      setNewNumber("")
+
+    if (persons.find(person => person.name === newName)) {
+      if (window.confirm(`${newName} is already in the phonebook. Do you wish to replace the number with a new one?`)) {
+        const personInfo = persons.find(person => person.name === newName)
+        const changedInfo = {...personInfo, number: newNumber}
+        pbService
+        .replace(changedInfo)
+          .then(returnedPerson => {
+            console.log(returnedPerson)
+            setNewName("")
+            setNewNumber("")
+          })
+      }
     }
 
     else{
-      setPersons(persons.concat(nameObject))
-      setNewName("")
-      setNewNumber("")
+      pbService
+        .create(nameObject)
+          .then(returnedPerson => {
+            console.log(returnedPerson)
+            setPersons(persons.concat(returnedPerson))
+            setNewName("")
+            setNewNumber("")
+          })
     }
   }
 
