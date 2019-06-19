@@ -68,7 +68,7 @@ const App = () => {
 
   const hook = () => {
     pbService
-      .getAll()
+      .getAll("")
         .then(dbPersons => {
           setPersons(dbPersons)
       })
@@ -143,7 +143,6 @@ const App = () => {
     console.log(event.target.value)
     setNewFilter(event.target.value)
   }
-
   return (
     <div>
       <Notification message={notificationMessage}/>
