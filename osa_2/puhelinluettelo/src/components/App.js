@@ -107,7 +107,7 @@ const App = () => {
             setNewName("")
             setTimeout(() => {
               setErrorMessage(null)
-            }, 3000)
+            }, 5000)
           })
       }
     }
@@ -124,6 +124,15 @@ const App = () => {
             setTimeout(() => {
               setNotificationMessage(null)
             }, 3000)
+          })
+          .catch(error => {
+            console.log(error.response.data)
+            setNewName("")
+            setNewNumber("")
+            setErrorMessage(`${error.response.data.error}`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
     }
   }
