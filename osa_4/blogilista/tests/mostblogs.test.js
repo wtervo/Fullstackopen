@@ -1,6 +1,6 @@
-const mostLikes = require("../utils/list_helper").mostLikes
+const mostBlogs = require("../utils/list_helper").mostBlogs
 
-describe("Most total likes for all written blogs", () => {
+describe("Most blogs written", () => {
 
 	const blogs = [
 		{
@@ -54,12 +54,12 @@ describe("Most total likes for all written blogs", () => {
 	]
 
 	const expectedblog = {
-		author: "Edsger W. Dijkstra",
-		likes: 17
+		author: "Robert C. Martin",
+		blogs: 3
 	}
 
-	test("Equals and object with Dijkstra and 17", () => {
-		expect(mostLikes(blogs)).toEqual(expectedblog)
+	test.skip("Equals and object with Martin and 3", () => {
+		expect(mostBlogs(blogs)).toEqual(expectedblog)
 	})
 
 })

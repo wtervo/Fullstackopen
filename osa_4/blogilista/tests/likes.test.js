@@ -1,7 +1,7 @@
 const listHelper = require("../utils/list_helper")
 
 describe("One", () => {
-	test("Dummy returns one", () => {
+	test.skip("Dummy returns one", () => {
 		const blogs = []
 
 		const result = listHelper.dummy(blogs)
@@ -21,7 +21,7 @@ describe("Total likes", () => {
 		}
 	]
 
-	test("When list has only one blog equals the likes of that", () => {
+	test.skip("When list has only one blog equals the likes of that", () => {
 		const result = listHelper.totalLikes(listWithOneBlog)
 		expect(result).toBe(5)
 	})
@@ -77,7 +77,7 @@ describe("Total likes", () => {
 		}
 	]
 
-	test("When list has multiple blogs equals the likes of those", () => {
+	test.skip("When list has multiple blogs equals the likes of those", () => {
 		const result = listHelper.totalLikes(blogs)
 		expect(result).toBe(36)
 	})

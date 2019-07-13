@@ -10,15 +10,14 @@
 
 # get https://rocky-gorge-10542.herokuapp.com/api/persons
 
-post http://localhost:3003/api/blogs
-Content-Type: application/json
+# post http://localhost:3003/api/blogs
+# Content-Type: application/json
 
-{
-    "title": "HELL-looks",
-    "author": "EternalKillerMasterAngelslayer",
-    "url": "www.helllooks.hailsatan.org",
-    "likes": "666"
-}
+# {
+#     "title": "sadadsaa",
+#     "author": "123131sdasd",
+#     "likes": "12312"
+# }
 
 
 # get http://localhost:3001/api/info
@@ -30,3 +29,15 @@ Content-Type: application/json
 #     "name": "Partalapsi",
 #     "number": "2131314123313"
 # }
+
+# delete http://localhost:3003/api/blogs/5d29b675f4be3936485e0dd5
+
+put http://localhost:3003/api/blogs/5d272614c5434b1158b0c115
+Content-Type: application/json
+
+{
+    "title": "sdasdasd",
+    "author": "sdagasdf",
+    "url": "yyyy",
+    "likes": 231
+}

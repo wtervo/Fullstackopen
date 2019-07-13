@@ -60,7 +60,7 @@ describe("Favorite blog", () => {
 	}
 
 
-	test("Equals an object of the most popular blog", () => {
+	test.skip("Equals an object of the most popular blog", () => {
 		expect(favoriteBlog(blogs)).toEqual(expectedblog)
 	})
 

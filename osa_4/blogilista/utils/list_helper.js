@@ -33,7 +33,7 @@ const mostBlogs = (blogs) => {
 			)}
 		return list
 	}, [])
-	
+
 	const maxblogs = Math.max(...authorArr.map(auth => auth.blogs))
 	const busiestAuthor = authorArr.filter(auth => auth.blogs === maxblogs)
 	return busiestAuthor[0]
