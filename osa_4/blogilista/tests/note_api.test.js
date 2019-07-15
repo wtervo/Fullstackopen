@@ -102,7 +102,7 @@ test.skip("Status code 204 when deleting a blog", async () => {
 	expect(notesAtEnd.length).toBe(helper.initialBlogs.length - 1)
 })
 
-test("Updated likes should be 5", async () => {
+test.skip("Updated likes should be 5", async () => {
 	const updateBlog = {
 		title: "muna pilluun",
 		author: "ah ah",
