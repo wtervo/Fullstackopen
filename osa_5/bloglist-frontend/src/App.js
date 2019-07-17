@@ -17,6 +17,7 @@ const App = () => {
 	const [newLikes, setNewLikes] = useState("")
 	const [errorMessage, setErrorMessage] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
+	const [monitorChange, setChange] = useState(Math.random()) //this hook is for rerendering the bloglist immediately after post or delete
 	const [username, setUsername] = useState("") 
 	const [password, setPassword] = useState("")
 	const [user, setUser] = useState(null)
@@ -27,7 +28,7 @@ const App = () => {
 			.getAll().then(initialBlogs => {
 				setBlogs(initialBlogs.sort((a, b) => b.likes - a.likes))
 			})
-	}, [])
+	}, [monitorChange])
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -71,6 +72,7 @@ const App = () => {
 				setNewAuthor("")
 				setNewUrl("")
 				setNewLikes("")
+				setChange(Math.random())
 				setTimeout(() => {
 					setNotificationMessage(null)
 				}, 4000)
@@ -158,7 +160,7 @@ const App = () => {
 						<h2>Blogs</h2>
 						<h3><b>Click a blog's name to show more details</b></h3>
 						{blogs.map(blog =>
-							<Blog blog={blog} setErrorMessage={setErrorMessage}/>
+							<Blog blog={blog} setErrorMessage={setErrorMessage} setChange={setChange}/>
 						)}
 					</div>
 				</div>

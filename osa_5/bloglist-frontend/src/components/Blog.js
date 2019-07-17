@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import blogService from "../services/blogs"
 
-const Blog = ({blog, setErrorMessage}) => {
+const Blog = ({blog, setErrorMessage, setChange}) => {
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -35,11 +35,12 @@ const Blog = ({blog, setErrorMessage}) => {
 		}
 	}
 
-	//Ideally would like to rerender the bloglist after deletion, but I'm too tired to figure it out
 	const deleteHandler = async (blog) => {
 		if (window.confirm(`Do you want to remove "${blog.title}" by ${blog.author}?`)) {
 			await blogService.remove(blog.id)
 			setErrorMessage(`"${blog.title}" by ${blog.author} removed`)
+			setBlogDetail(false)
+			setChange(Math.random())
 			setTimeout(() => {
 				setErrorMessage(null)
 			}, 3000)
@@ -50,7 +51,7 @@ const Blog = ({blog, setErrorMessage}) => {
 			<div style={blogStyle}>
 				<b onClick={() => setBlogDetail(false)}>Less details</b>
 				<p>"{blog.title}" by {blog.author}</p>
-				<p>URL: {blog.url}</p>
+				<p>URL: <a href={blog.url}>{blog.url}</a></p> {/*links obviously are fake anyway, but I did not manage to get them to work externally*/}
 				<p>Likes: {blogLikes} <button onClick={() => likeHandler(blog)}>Like</button></p>
 				<p>Added by: {blog.user.username}</p>
 				{deleteButton(blog)}
