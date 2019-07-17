@@ -21,14 +21,14 @@
 #     "likes": 231
 # }
 
-# post http://localhost:3003/api/users
-# Content-Type: application/json
+post http://localhost:3003/api/users
+Content-Type: application/json
 
-# {
-#     "username": "dirlewanger",
-#     "name": "kostaja",
-#     "password": "hikky"
-# }
+{
+    "username": "benis",
+    "name": "SPURDO SPÄRDE :DDDDDDDDDDDD",
+    "password": "fug"
+}
 
 # post http://localhost:3003/api/blogs
 # Content-Type: application/json
@@ -50,5 +50,5 @@
 #     "password": "hikky"
 # }
 
-delete http://localhost:3003/api/blogs/5d2c708e4820ce4148abb056
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpcmxld2FuZ2VyIiwiaWQiOiI1ZDJjNzEyNjQ4MjBjZTQxNDhhYmIwNTgiLCJpYXQiOjE1NjMxOTM2NzJ9.3BkhmLnWKgffIf6ysPAm9EphZOU-IBvm3jqjbg_il-c
+# delete http://localhost:3003/api/blogs/5d2c708e4820ce4148abb056
+# Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpcmxld2FuZ2VyIiwiaWQiOiI1ZDJjNzEyNjQ4MjBjZTQxNDhhYmIwNTgiLCJpYXQiOjE1NjMxOTM2NzJ9.3BkhmLnWKgffIf6ysPAm9EphZOU-IBvm3jqjbg_il-c
