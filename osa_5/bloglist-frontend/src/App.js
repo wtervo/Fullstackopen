@@ -11,15 +11,9 @@ import blogService from "./services/blogs"
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]) 
-	const [newBlog, setNewBlog] = useState("")
-	const [newAuthor, setNewAuthor] = useState("")
-	const [newUrl, setNewUrl] = useState("")
-	const [newLikes, setNewLikes] = useState("")
 	const [errorMessage, setErrorMessage] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
 	const [monitorChange, setChange] = useState(Math.random()) //this hook is for rerendering the bloglist immediately after post or delete
-	const [username, setUsername] = useState("") 
-	const [password, setPassword] = useState("")
 	const [user, setUser] = useState(null)
 	const [newBlogVisible, setNewBlogVisible] = useState(false)
 
@@ -39,39 +33,20 @@ const App = () => {
 		}
 	}, [])
 
-	const handleBlogChange = (event) => {
-		setNewBlog(event.target.value)
-	}
-
-	const handleAuthorChange = (event) => {
-		setNewAuthor(event.target.value)
-	}
-
-	const handleUrlChange = (event) => {
-		setNewUrl(event.target.value)
-	}
-
-	const handleLikesChange = (event) => {
-		setNewLikes(event.target.value)
-	}
 
 	const addBlog = (event) => {
 		event.preventDefault()
 		const blogObject = {
-			title: newBlog,
-			author: newAuthor,
-			url: newUrl,
-			likes: newLikes === "" ? 0 : newLikes
+			title: event.target[0].value,
+			author: event.target[1].value,
+			url: event.target[2].value,
+			likes: event.target[3].value === "" ? 0 : event.target[3].value
 		}
 		blogService
 			.create(blogObject)
 			.then(data => {
 				setBlogs(blogs.concat(data))
 				setNotificationMessage(`A new blog "${blogObject.title}" by ${blogObject.author} has been added to the collection`)
-				setNewBlog("")
-				setNewAuthor("")
-				setNewUrl("")
-				setNewLikes("")
 				setChange(Math.random())
 				setTimeout(() => {
 					setNotificationMessage(null)
@@ -81,6 +56,8 @@ const App = () => {
 
 	const handleLogin = async (event) => {
 		event.preventDefault()
+		const username = event.target[0].value
+		const password = event.target[1].value
 		console.log("Logging in with", username, password)
 		try {
 			const user = await loginService.login({
@@ -92,8 +69,6 @@ const App = () => {
 			blogService.setToken(user.token)
 			setUser(user)
 			setNotificationMessage(`Succesfully logged in. Welcome back, ${username}!`)
-			setUsername("")
-			setPassword("")
 			setTimeout(() => {
 				setNotificationMessage(null)
 			}, 3000)
@@ -123,14 +98,6 @@ const App = () => {
 				<div style={showWhenVisible}>
 					<BlogForm
 						addBlog={addBlog}
-						newBlog={newBlog}
-						newAuthor={newAuthor}
-						newUrl={newUrl}
-						newLikes={newLikes}
-						handleBlogChange={handleBlogChange}
-						handleAuthorChange={handleAuthorChange}
-						handleUrlChange={handleUrlChange}
-						handleLikesChange={handleLikesChange}
 					/>
 					<button onClick={() => setNewBlogVisible(false)}>Cancel</button>
 				</div>
@@ -147,11 +114,7 @@ const App = () => {
 
 			{user === null ?
 				<LoginForm
-					username={username}
-					password={password}
 					handleLogin={handleLogin}
-					handleUsernameChange={({target}) => setUsername(target.value)}
-					handlePasswordChange={({target}) => setPassword(target.value)}
 				/> :
 				<div>
 					<p>Logged in as {user.username} ({user.name}) <button onClick={handleLogout}>Logout</button></p>
