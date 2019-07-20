@@ -6,15 +6,10 @@ import {connect} from "react-redux"
 const AnecdoteList = (props) => {
 
 	const handleVote = (anecdote) => {
-		props.vote(anecdote.id)
-		props.notificationChange(
-			`You voted for "${anecdote.content}"`
-		)
-		setTimeout(() => {
-			props.notificationChange(null)
-		}, 5000)
+		props.vote(anecdote)
+		props.notificationChange(`You voted for "${anecdote.content}"`, 5)
 	}
-
+	console.log(props.visibleAnecdotes)
 	return(
 		<div>
 			{props.visibleAnecdotes.map(anecdote =>
@@ -23,7 +18,7 @@ const AnecdoteList = (props) => {
 						{anecdote.content}
 					</div>
 					<div>
-            has {anecdote.votes}
+						has {anecdote.votes}
 						<button onClick={() => handleVote(anecdote)}>vote</button>
 					</div>
 				</div>
