@@ -25,9 +25,9 @@ post http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "username": "benis",
-    "name": "SPURDO SPÄRDE :DDDDDDDDDDDD",
-    "password": "fug"
+    "username": "kaasila",
+    "name": "Antti Kulli-(Kaasi-)-Kaasila",
+    "password": "muna"
 }
 
 # post http://localhost:3003/api/blogs
