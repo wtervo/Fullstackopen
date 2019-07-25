@@ -1,11 +1,25 @@
 import React from "react"
-import PropTypes from "prop-types"
+import {connect} from "react-redux"
 import {Form, Button} from "react-bootstrap"
+import {changeLogin} from "../reducers/loginReducer"
+import {errorChange} from "../reducers/errorReducer"
+import {notificationChange} from "../reducers/notificationReducer"
 
-const LoginForm = ({handleLogin}) => {
+const LoginForm = (props) => {
 
-	const submitHandler = (event) => {
-		handleLogin(event)
+	const submitHandler = async (event) => {
+		event.preventDefault()
+		const username = event.target[0].value
+		const password = event.target[1].value
+		event.target[1].value = ""
+		console.log("Logging in with", username, password)
+		try {
+			await props.changeLogin(username, password)
+			props.notificationChange(`Successfully logged in. Welcome back, ${username}!`, 5)
+		}
+		catch {
+			props.errorChange("Invalid username or password", 5)
+		}
 	}
 
 	return(
@@ -33,8 +47,10 @@ const LoginForm = ({handleLogin}) => {
 	)
 }
 
-LoginForm.propTypes = {
-	handleLogin: PropTypes.func.isRequired
+const mapDispatchToProps = {
+	changeLogin,
+	errorChange,
+	notificationChange
 }
 
-export default LoginForm
+export default connect(null, mapDispatchToProps)(LoginForm)

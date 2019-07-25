@@ -87,21 +87,8 @@ blogsRouter.put("/:id", async (request, response, next) => {
 		likes: body.likes,
 	}
 	try {
-		const decodedToken = jwt.verify(request.token, process.env.SECRET)
-		if (!request.token || !decodedToken.id) {
-			return response.status(401).json({error: "Token missing or invalid"})
-		}
-		const user = await User.findById(decodedToken.id)
-		const blog = await Blog.findById(request.params.id)
-		if (blog.user.toString() !== user.id.toString()) {
-			return response.status(401).json({
-				error: `User ${user.username.toString()} is not authorized to edit this blog`
-			})
-		}
-		else {
-			const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updateBlogObject, {new: true})
-			response.json(updatedBlog.toJSON())
-		}
+		const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updateBlogObject, {new: true})
+		response.json(updatedBlog.toJSON())
 	}
 	catch (error) {
 		next(error)
