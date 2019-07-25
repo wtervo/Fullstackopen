@@ -1,8 +1,14 @@
 import React, {useState} from "react"
 import blogService from "../services/blogs"
 import {Button} from "react-bootstrap"
+import {connect} from "react-redux"
+import {errorChange} from "../reducers/errorReducer"
 
-const Blog = ({blog, setErrorMessage, setChange}) => {
+
+const Blog = (props) => {
+	const blog = props.blog
+	const setChange = props.setChange
+	console.log(props.errorChange)
 	const blogStyle = {
 		paddingTop: 10,
 		paddingLeft: 2,
@@ -13,7 +19,6 @@ const Blog = ({blog, setErrorMessage, setChange}) => {
 
 	const [blogDetail, setBlogDetail] = useState(false)
 	const [blogLikes, setBlogLikes] = useState(blog.likes)
-
 	const likeHandler = async (blog) => {
 		const updateObject = {
 			id: blog.id,
@@ -42,12 +47,9 @@ const Blog = ({blog, setErrorMessage, setChange}) => {
 	const deleteHandler = async (blog) => {
 		if (window.confirm(`Do you want to remove "${blog.title}" by ${blog.author}? This action cannot be undone.`)) {
 			await blogService.remove(blog.id)
-			setErrorMessage(`"${blog.title}" by ${blog.author} removed`)
+			props.errorChange(`"${blog.title}" by ${blog.author} removed`, 7)
 			setBlogDetail(false)
 			setChange(Math.random())
-			setTimeout(() => {
-				setErrorMessage(null)
-			}, 3000)
 		}
 	}
 	if (blogDetail) {
@@ -84,4 +86,14 @@ const Blog = ({blog, setErrorMessage, setChange}) => {
 	}
 }
 
-export default Blog
+const mapStateToProps = (state) => {
+	return {
+		error: state.error
+	}
+}
+
+const mapDispatchToProps = {
+	errorChange,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Blog)

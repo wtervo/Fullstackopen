@@ -1,7 +1,9 @@
 import React from "react"
 import {Alert} from "react-bootstrap"
+import {connect} from "react-redux"
 
-const Notification = ({message}) => {
+const Notification = (props) => {
+	const message = props.notification
 	if (message === null) {
 		return null
 	}
@@ -17,4 +19,10 @@ const Notification = ({message}) => {
 	)
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+	return {
+		notification: state.notification
+	}
+}
+
+export default connect(mapStateToProps)(Notification)

@@ -9,12 +9,13 @@ import LoginForm from "./components/LoginForm"
 import BlogForm from './components/BlogForm';
 import loginService from "./services/login"
 import blogService from "./services/blogs"
+import {connect} from 'react-redux';
+import {notificationChange} from "./reducers/notificationReducer"
+import {errorChange} from "./reducers/errorReducer"
 
 
-const App = () => {
+const App = (props) => {
 	const [blogs, setBlogs] = useState([]) 
-	const [errorMessage, setErrorMessage] = useState(null)
-	const [notificationMessage, setNotificationMessage] = useState(null)
 	const [monitorChange, setChange] = useState(Math.random()) //this hook is for rerendering the bloglist immediately after post or delete
 	const [user, setUser] = useState(null)
 	const [newBlogVisible, setNewBlogVisible] = useState(false)
@@ -43,30 +44,26 @@ const App = () => {
 			title: event.target[0].value,
 			author: event.target[1].value,
 			url: urlValue.search("https://") === -1 ? "https://" + urlValue : urlValue,
-			likes: event.target[3].value === "" ? 0 : event.target[3].value
+			likes: event.target[3].value === "" ? 0 : parseInt(event.target[3].value)
 		}
 		blogService
 			.create(blogObject)
 			.then(data => {
 				setBlogs(blogs.concat(data))
-				setNotificationMessage(`A new blog "${blogObject.title}" by ${blogObject.author} has been added to the collection`)
+				props.notificationChange(`A new blog "${blogObject.title}" by ${blogObject.author} has been added to the collection`, 5)
 				setChange(Math.random())
-				setTimeout(() => {
-					setNotificationMessage(null)
-				}, 5000)
 			})
 			.catch(() => {
 				if (blogObject.title === "" || blogObject.author === "" || blogObject.url === "")
-					setErrorMessage("One of the required fields is missing")
+					props.errorChange("One of the required fields is missing", 7)
+				else if (blogs.find(blog => blogObject.title === blog.title))
+					props.errorChange(`A blog titled "${blogObject.title}" is already in the collection`, 7)
 				else if (typeof blogObject.likes !== "number" || blogObject.likes < 0 || !Number.isInteger(blogObject.likes))
-					setErrorMessage("Likes has to be an integer valued 0 or greater")
+					props.errorChange("Likes has to be an integer valued 0 or greater", 7)
 				else if (blogObject.title.length > 100 || blogObject.author.length > 30 || blogObject.url.length > 100)
-					setErrorMessage("At least one field value is longer than the allowed maximum (Title = 100, Author = 30, Url = 100)")
+					props.errorChange("At least one field value is longer than the allowed maximum (Title = 100, Author = 30, Url = 100)", 7)
 				else if (blogObject.likes > 1e+10)
-					setErrorMessage("Maximum allowed likes is 10 000 000 000 (ten billion)")
-				setTimeout(() => {
-					setErrorMessage(null)
-				}, 7000)
+					props.errorChange("Maximum allowed likes is 10 000 000 000 (ten billion)", 7)
 			})
 	}
 
@@ -85,16 +82,10 @@ const App = () => {
 			)
 			blogService.setToken(user.token)
 			setUser(user)
-			setNotificationMessage(`Succesfully logged in. Welcome back, ${username}!`)
-			setTimeout(() => {
-				setNotificationMessage(null)
-			}, 5000)
+			props.notificationChange(`Succesfully logged in. Welcome back, ${username}!`, 5)
 		}
 		catch {
-			setErrorMessage("Invalid username or password")
-			setTimeout(() => {
-				setErrorMessage(null)
-			}, 5000)
+			props.errorChange("Invalid username or password", 5)
 		}
 	}
 
@@ -126,8 +117,8 @@ const App = () => {
 		<div class="container">
 			<h1>Bloglist</h1>
 
-			<Errormessage message={errorMessage} />
-			<Notification message={notificationMessage} />
+			<Errormessage />
+			<Notification />
 
 			{user === null ?
 				<LoginForm
@@ -141,7 +132,7 @@ const App = () => {
 					<div>
 						<h2>Blogs</h2>
 						<br />
-						<h4><b>Click a name to show more details about the blog</b></h4>
+						<h4><b>Click a name to view more details about the blog</b></h4>
 						<br />
 						<Table striped>
 							<thead style={{
@@ -158,7 +149,7 @@ const App = () => {
 							</thead>
 							<tbody>
 								{blogs.map(blog =>
-									<Blog blog={blog} setErrorMessage={setErrorMessage} setChange={setChange}/>
+									<Blog blog={blog} setChange={setChange}/>
 								)}
 							</tbody>
 						</Table>
@@ -170,4 +161,4 @@ const App = () => {
 	)
 }
 
-export default App
+export default connect(null, {notificationChange, errorChange})(App)

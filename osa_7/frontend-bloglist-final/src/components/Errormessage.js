@@ -1,7 +1,9 @@
 import React from "react"
 import {Alert} from "react-bootstrap"
+import {connect} from "react-redux"
 
-const Errormessage = ({message}) => {
+const Errormessage = (props) => {
+	const message = props.error
 	if (message === null) {
 		return null
 	}
@@ -17,4 +19,10 @@ const Errormessage = ({message}) => {
 	)
 }
 
-export default Errormessage
+const mapStateToProps = (state) => {
+	return {
+		error: state.error
+	}
+}
+
+export default connect(mapStateToProps)(Errormessage)
