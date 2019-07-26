@@ -14,7 +14,7 @@ export const addBlog = newBlog => {
 	return async dispatch => {
 		const addedBlog = await blogService.create(newBlog)
 		dispatch({
-			type: "ADD",
+			type: "ADD_BLOG",
 			data: {...addedBlog,
 				user: {
 					username: newBlog.user.username,
@@ -28,10 +28,9 @@ export const addBlog = newBlog => {
 
 export const removeBlog = deletableBlog => {
 	return async dispatch => {
-		console.log(deletableBlog)
 		await blogService.remove(deletableBlog.id)
 		dispatch({
-			type: "REMOVE",
+			type: "REMOVE_BLOG",
 			data: deletableBlog
 		})
 	}
@@ -61,12 +60,12 @@ const blogReducer = (state = [], action) => {
 		).sort((a, b) => {
 			return b.likes - a.likes
 		})
-	case "ADD":
+	case "ADD_BLOG":
 		const blogObject = {...action.data}
 		return state.concat(blogObject).sort((a, b) => {
 			return b.likes - a.likes
 		})
-	case "REMOVE":
+	case "REMOVE_BLOG":
 		const removeObject = action.data
 		return state.filter(blog => blog.id !== removeObject.id)
 	case "INIT_BLOGS":

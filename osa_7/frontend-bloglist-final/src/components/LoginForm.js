@@ -4,6 +4,7 @@ import {Form, Button} from "react-bootstrap"
 import {changeLogin} from "../reducers/loginReducer"
 import {errorChange} from "../reducers/errorReducer"
 import {notificationChange} from "../reducers/notificationReducer"
+import {withRouter} from "react-router-dom"
 
 const LoginForm = (props) => {
 
@@ -16,6 +17,7 @@ const LoginForm = (props) => {
 		try {
 			await props.changeLogin(username, password)
 			props.notificationChange(`Successfully logged in. Welcome back, ${username}!`, 5)
+			props.history.push("/")
 		}
 		catch {
 			props.errorChange("Invalid username or password", 5)
@@ -24,8 +26,8 @@ const LoginForm = (props) => {
 
 	return(
 		<>
-		<h2>Login to the application</h2>
 		<br />
+		<h2>Login to the application</h2>
 		<br />
 		<br />
 		<Form onSubmit={submitHandler}>
@@ -53,4 +55,4 @@ const mapDispatchToProps = {
 	notificationChange
 }
 
-export default connect(null, mapDispatchToProps)(LoginForm)
+export default withRouter(connect(null, mapDispatchToProps)(LoginForm))

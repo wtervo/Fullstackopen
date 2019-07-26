@@ -3,9 +3,7 @@ import blogService from "../services/blogs"
 
 export const changeLogin = (username, password) => {
 	return async dispatch => {
-		console.log(username, password)
 		const loginDetails = await loginService.login({username, password})
-		console.log(loginDetails)
 		window.localStorage.setItem(
 			"loggedBlogappUser", JSON.stringify(loginDetails)
 		)
@@ -29,7 +27,6 @@ export const resetLogin = () => {
 const loginReducer = (state = [], action) => {
 	switch (action.type) {
 	case "CHANGE_LOGIN":
-		console.log(action.data)
 		return state.concat(action.data)
 	case "RESET_LOGIN":
 		return state = []

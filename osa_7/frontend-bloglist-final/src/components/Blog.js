@@ -1,9 +1,9 @@
-import React, {useState} from "react"
-import {Button} from "react-bootstrap"
+import React from "react"
+import {Button, Table} from "react-bootstrap"
 import {connect} from "react-redux"
 import {errorChange} from "../reducers/errorReducer"
 import {vote, removeBlog} from "../reducers/blogReducer"
-
+import {Link, withRouter} from "react-router-dom"
 
 const Blog = (props) => {
 	const blog = props.blog
@@ -15,7 +15,6 @@ const Blog = (props) => {
 		marginBottom: 5
 	}
 
-	const [blogDetail, setBlogDetail] = useState(false)
 	const likeHandler = async (blog) => {
 		const updateObject = {
 			id: blog.id,
@@ -26,63 +25,73 @@ const Blog = (props) => {
 			likes: blog.likes + 1
 		}
 		props.vote(updateObject)
-
 	}
 
-	const deleteButton = (blog) => {
+	const deleteAndEditButtons = (blog) => {
 		const loggedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"))
 		if (loggedUser.username === blog.user.username) {
 			return(
 				<div>
 					<hr />
-					<p class="text-right"><Button variant="danger" onClick={() => deleteHandler(blog)}>Remove</Button></p>
+					<p class="text-center"><Button variant="info">Edit</Button></p>
+					<hr />
+					<p class="text-center"><Button variant="danger" onClick={() => deleteHandler(blog)}>Remove</Button></p>
 				</div>
 			)
 		}
 	}
 
+
+
 	const deleteHandler = async (blog) => {
 		if (window.confirm(`Do you want to remove "${blog.title}" by ${blog.author}? This action cannot be undone.`)) {
 			await props.removeBlog(blog)
 			props.errorChange(`"${blog.title}" by ${blog.author} removed`, 7)
+			props.history.push("/blogs")
 		}
 	}
-	if (blogDetail) {
-		return(
-			<tr key={blog.id}>
-				<td style={blogStyle}>
-					<b onClick={() => setBlogDetail(false)}>Less details</b>
-					<p>"{blog.title}" by {blog.author}</p>
-					<p>Likes: {blog.likes}</p>
-					<p>URL: <a href={blog.url}>{blog.url}</a></p> {/*links obviously are fake anyway, but I did not manage to get them to work externally*/}
-					<p>Added by: {blog.user.username}</p>
-				</td>
-				<td>
-					{blog.author}
-					<br />
-					<br />
-					<p class="text-right"><Button variant="success" onClick={() => likeHandler(blog)}>Like</Button></p>
-					{deleteButton(blog)}
-				</td>
-			</tr>
-		)
+
+	if (blog === undefined) {
+		return null
 	}
-	else {
-		return (
-			<tr key={blog.id}>
-				<td>
-					<b onClick={() => setBlogDetail(true)}>{blog.title}</b>
-				</td>
-				<td>
-					{blog.author}
-				</td>
-			</tr>
-		)
-	}
+
+	return(
+		<div>
+			<br />
+			<h3>Blog ID: {blog.id}</h3>
+			<br />
+			<Table>
+				<tbody>
+					<tr key={blog.id}>
+						<td style={blogStyle}>
+							<p>Title: {blog.title}</p>
+							<p>Author: {blog.author}</p>
+							<p>URL: <a href={blog.url}>{blog.url}</a></p>
+							<p>Likes: {blog.likes}</p>
+							<p>Added by: <Link to={`/users/${blog.user.id}`}>{blog.user.username}</Link></p>
+						</td>
+						<td style={blogStyle}>
+							<p class="text-center"><Button variant="success" size="lg" onClick={() => likeHandler(blog)}>Like</Button></p>
+							{deleteAndEditButtons(blog)}
+						</td>
+					</tr>
+				</tbody>
+			</Table>
+			<br />
+			<h4>Leave a comment</h4>
+			<br />
+			<h4>Comments:</h4>
+			<br />
+			<br />
+			<Link to="/blogs"><Button>To Blogs</Button></Link>
+		</div>
+	)
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+	const blog = ownProps.blog
 	return {
+		blog,
 		error: state.error
 	}
 }
@@ -93,4 +102,4 @@ const mapDispatchToProps = {
 	removeBlog,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Blog)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Blog))
