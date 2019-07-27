@@ -63,7 +63,7 @@ const BlogForm = (props) => {
 					type="text"
 					name="author"
 				/>
-				<Form.Label>Url:</Form.Label>
+				<Form.Label>URL:</Form.Label>
 				<Form.Control
 					type="text"
 					name="url"

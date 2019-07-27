@@ -6,10 +6,14 @@ import {Link} from "react-router-dom"
 const Users = (props) => {
 	const totalUsers= props.users.length
 	const activeUsers = props.users.filter(user => user.blogs.length !== 0)
+	const commentedBlogs = props.blogs.filter(blog => blog.comments.length !== 0)
+	const totalComments = commentedBlogs.map(blog => blog.comments.length).reduce((a, b) => a + b, 0)
 
 	return (
 		<div>
-			<p>Currently {totalUsers} registered users, of which {activeUsers.length} are active ({(100 * parseInt(activeUsers.length) /  parseInt(totalUsers)).toFixed(2)}%).</p>
+			<br />
+			<p class="text-center"><big>Currently {totalUsers} registered users, of which {activeUsers.length} are active ({(100 * parseInt(activeUsers.length) /  parseInt(totalUsers)).toFixed(2)}%).</big></p>
+			<p class="text-center"><big>Our users have submitted a total of {totalComments} (anonymous) comments across {commentedBlogs.length} blogs!</big></p>
 			<br />
 			<h2>List of registered users</h2>
 			<br/>
@@ -46,6 +50,7 @@ const Users = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
+		blogs: state.blogs,
 		users: state.users,
 	}
 }

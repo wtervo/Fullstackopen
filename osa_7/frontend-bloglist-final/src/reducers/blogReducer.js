@@ -36,6 +36,16 @@ export const removeBlog = deletableBlog => {
 	}
 }
 
+export const updateBlog = blogToUpdate => {
+	return async dispatch => {
+		const updatedBlog = await blogService.update(blogToUpdate)
+		dispatch({
+			type: "UPDATE_BLOG",
+			data: updatedBlog
+		})
+	}
+}
+
 export const initialBlogs = () => {
 	return async dispatch => {
 		const allBlogs = await blogService.getAll()
@@ -68,6 +78,14 @@ const blogReducer = (state = [], action) => {
 	case "REMOVE_BLOG":
 		const removeObject = action.data
 		return state.filter(blog => blog.id !== removeObject.id)
+	case "UPDATE_BLOG":
+		const updateObject = action.data
+		console.log(updateObject)
+		return state.map(blog =>
+			blog.id !== updateObject.id ? blog : updateObject
+		).sort((a, b) => {
+			return b.likes - a.likes
+		})
 	case "INIT_BLOGS":
 		return action.data.sort((a, b) => {
 			return b.likes - a.likes

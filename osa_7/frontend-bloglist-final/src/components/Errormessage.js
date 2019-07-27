@@ -4,6 +4,7 @@ import {connect} from "react-redux"
 
 const Errormessage = (props) => {
 	const message = props.error
+	
 	if (message === null) {
 		return null
 	}

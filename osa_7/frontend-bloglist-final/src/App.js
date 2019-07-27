@@ -17,8 +17,7 @@ import {connect} from "react-redux"
 import {initialBlogs} from "./reducers/blogReducer"
 import {initialUsers} from "./reducers/userReducer"
 import {
-	BrowserRouter as Router,
-	Route, Link, Redirect, withRouter
+	BrowserRouter as Router, Route, Link
 } from "react-router-dom"
 
 const App = (props) => {
@@ -74,14 +73,20 @@ const App = (props) => {
 				//TODO: If a user is logged in and refreshes the page, LoginForm is rendered unnecessarily very briefly
 				//because the app takes time to update the user variable with the localStorage information.
 				//Would very much like to stop this from happening, but currently out of ideas.
-					<Route exact path="/login" render={() =>
-						<div>
-							<h1>Bloglist React App</h1>
-							<Errormessage />
-							<Notification />
-							<LoginForm />
-						</div>
-					} />
+					<div>
+						<br />
+						<br />
+						<h1>Welcome to my React bloglist app!</h1>
+						<br />
+						<p><big><Link to="/login">Login</Link> to the app or create an account.</big></p>
+						<Route exact path="/login" render={() =>
+							<div>
+								<Errormessage />
+								<Notification />
+								<LoginForm />
+							</div>
+						} />
+					</div>
 					:
 					<div>
 						<div>
@@ -112,9 +117,16 @@ const App = (props) => {
 							<div>
 								<Errormessage />
 								<Notification />
-								<h1>Bloglist React App</h1>
-								<p>Welcome to my shitty app!</p>
-								<p>Use the navigation bar on top to find more!</p>
+								<h1 class="text-center">Bloglist React App</h1>
+								<br />
+								<p class="text-center"><big>Welcome to my React bloglist app!</big></p>
+								<br />
+								<br />
+								<p class="text-center"><big>Feel free to add blogs and comments as you please</big></p>
+								<p class="text-center"><big>All of the added stuff is pretty much unmoderated, so don't take things too seriously.</big></p>
+								<br />
+								<br />
+								<p class="text-center"><big>Use the navigation bar on top to find more!</big></p>
 								<Home user={user} setUser={setUser}/>
 							</div>
 						} />
@@ -122,9 +134,9 @@ const App = (props) => {
 							<div>
 								<Errormessage />
 								<Notification />
-								<h1>Bloglist</h1>
+								<h1 class="text-center">Bloglist</h1>
 								<br />
-								<p><big>The database currently has {totalBlogs} blogs by {activeUsers.length} users!</big></p>
+								<p class="text-center"><big>The database currently has {totalBlogs} blogs by {activeUsers.length} users!</big></p>
 								<br />
 								{blogForm()}
 								<br />
@@ -132,13 +144,17 @@ const App = (props) => {
 							</div>
 						} />
 						<Route exact path="/blogs/:id" render={({match}) =>
-							<Blog blog={blogById(match.params.id)} />
+							<div>
+								<Errormessage />
+								<Notification />
+								<Blog blog={blogById(match.params.id)} />
+							</div>
 						} />
 						<Route exact path="/users" render={() =>
 							<div>
 								<Errormessage />
 								<Notification />
-								<h1>Users</h1>
+								<h1 class="text-center">Users</h1>
 								<Users />
 							</div>
 						} />
@@ -148,7 +164,7 @@ const App = (props) => {
 						<Route exact path="/about" render={() =>
 							<div>
 								<br />
-								<h1>About the App</h1>
+								<h1 class="text-center">About the App</h1>
 								<br />
 								<br />
 								<p>
