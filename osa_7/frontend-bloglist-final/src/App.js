@@ -7,6 +7,7 @@ import Home from "./components/Home"
 import Blog from "./components/Blog"
 import Users from "./components/Users"
 import User from "./components/User"
+import Createaccount from "./components/Createaccount"
 import Footer from "./components/Footer"
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/BlogForm"
@@ -20,6 +21,8 @@ import {
 	BrowserRouter as Router, Route, Link
 } from "react-router-dom"
 
+//This component ended up quite bloated, despite my best attempts of avoiding it from happening
+//I suppose the routes should have been included in their own subcomponent in a separate file
 const App = (props) => {
 	const [user, setUser] = useState(null)
 	const [newBlogVisible, setNewBlogVisible] = useState(false)
@@ -50,7 +53,7 @@ const App = (props) => {
 					<Button onClick={() => setNewBlogVisible(true)}>Add a new blog</Button>
 				</div>
 				<div style={showWhenVisible}>
-					<BlogForm />
+					<BlogForm setNewBlogVisible={setNewBlogVisible}/>
 					<Button onClick={() => setNewBlogVisible(false)}>Cancel</Button>
 				</div>
 			</div>
@@ -76,9 +79,17 @@ const App = (props) => {
 					<div>
 						<br />
 						<br />
-						<h1>Welcome to my React bloglist app!</h1>
+						<h1 class="text-center">Welcome to my React bloglist app!</h1>
 						<br />
-						<p><big><Link to="/login">Login</Link> to the app or create an account.</big></p>
+						<h4 class="text-center"><big><Link to="/login"><u>Login</u></Link> to the app or <Link to="/createaccount"><u>create</u></Link> an account.</big></h4>
+						<br />
+						<p class="text-center"><big><b>The database currently has {totalBlogs} blogs by {activeUsers.length} users!</b></big></p>
+						<br />
+						<p class="text-center"><big><b>A total of {props.users.length} users have registered for the app!</b></big></p>
+						{/*The /login path is redundant, because unlogged user sees a shitty page and has to manually move to the login page
+						and after the login, is redirected back to the home page. Would be better if the login was rendered on the homepage
+						when the visitor is not logged in, but since this system is already in place and served as a nice practice to implement,
+						I'm going to let this pass.*/}
 						<Route exact path="/login" render={() =>
 							<div>
 								<Errormessage />
@@ -86,10 +97,20 @@ const App = (props) => {
 								<LoginForm />
 							</div>
 						} />
+						<Route exact path="/createaccount" render={() =>
+							<div>
+								<Errormessage />
+								<Notification />
+								<br />
+								<h1 class="text-center">Create a new account</h1>
+								<Createaccount />
+							</div>
+						} />
 					</div>
 					:
 					<div>
 						<div>
+							{/*Navbar collapses when on a small screen, like phone*/}
 							<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
 								<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 								<Navbar.Brand href="/">Bloglist App</Navbar.Brand>
@@ -123,7 +144,7 @@ const App = (props) => {
 								<br />
 								<br />
 								<p class="text-center"><big>Feel free to add blogs and comments as you please</big></p>
-								<p class="text-center"><big>All of the added stuff is pretty much unmoderated, so don't take things too seriously.</big></p>
+								<p class="text-center"><big>All of the added stuff is pretty much unmoderated, so <b>don't take things too seriously</b>, as almost everything is nothing more than a stupid joke.</big></p>
 								<br />
 								<br />
 								<p class="text-center"><big>Use the navigation bar on top to find more!</big></p>
@@ -184,6 +205,13 @@ const App = (props) => {
 								<p>
 									If you wish to give feedback about the app, feel free to do so by sending me an email
 									at <a href= "mailto: tervo.oskari@gmail.com">tervo.oskari@gmail.com</a>.
+								</p>
+								<br />
+								<br />
+								<br />
+								<p>
+									PS. I know very well how bad and bland the site looks, but unfortunately I lack the artistic vision and patience
+									to improve it to a pleasing degree :|
 								</p>
 							</div>
 						} />

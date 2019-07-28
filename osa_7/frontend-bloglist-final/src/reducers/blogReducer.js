@@ -1,3 +1,5 @@
+//Reducer and all of the action creators involving state.blogs
+
 import blogService from "../services/blogs"
 
 export const vote = blog => {

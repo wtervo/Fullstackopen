@@ -2,6 +2,9 @@ const dummy = (blogs) => {
 	return 1
 }
 
+//This component is a remnant of some older tasks and is not currently used
+//Similar operations are done in front of the app and I kind of forgot about this stuff,
+//thus working unnecessarily...
 const totalLikes = (blogs) => {
 	return blogs.reduce((sum, blog) => {
 		return sum + blog.likes

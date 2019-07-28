@@ -5,6 +5,7 @@ import {addBlog} from "../reducers/blogReducer"
 import {notificationChange} from "../reducers/notificationReducer"
 import {errorChange} from "../reducers/errorReducer"
 
+//Component which adds new blogs to the collection
 const BlogForm = (props) => {
 
 	const submitHandler = async (event) => {
@@ -15,7 +16,8 @@ const BlogForm = (props) => {
 		const blogObject = {
 			title: event.target[0].value,
 			author: event.target[1].value,
-			url: urlValue.search("https://") === -1 ? "https://" + urlValue : urlValue,
+			url: urlValue.search("https://") === -1 ? "https://" + urlValue : urlValue, //https is added when it's missing
+			//The problem comes when the added link is http instead...
 			likes: event.target[3].value === "" ? 0 : parseInt(event.target[3].value),
 			user: {
 				id: loggedUser.id,
@@ -31,6 +33,7 @@ const BlogForm = (props) => {
 		try {
 			await props.addBlog(blogObject)
 			props.notificationChange(`A new blog "${blogObject.title}" by ${blogObject.author} has been added to the collection`, 5)
+			props.setNewBlogVisible(false) //Hides the blogform after a successful submission
 		}
 
 		catch {
@@ -38,6 +41,7 @@ const BlogForm = (props) => {
 				props.errorChange("One of the required fields is missing", 7)
 			else if (props.blogs.find(blog => blogObject.title === blog.title))
 				props.errorChange(`A blog titled "${blogObject.title}" is already in the collection`, 7)
+			//Check if likes is a positive integer
 			else if (typeof blogObject.likes !== "number" || blogObject.likes < 0 || !Number.isInteger(blogObject.likes))
 				props.errorChange("Likes has to be an integer valued 0 or greater", 7)
 			else if (blogObject.title.length > 100 || blogObject.author.length > 30 || blogObject.url.length > 100)
@@ -57,24 +61,28 @@ const BlogForm = (props) => {
 				<Form.Control
 					type="text"
 					name="title"
+					id="title"
 				/>
 				<Form.Label>Author:</Form.Label>
 				<Form.Control
 					type="text"
 					name="author"
+					id="author"
 				/>
 				<Form.Label>URL:</Form.Label>
 				<Form.Control
 					type="text"
 					name="url"
+					id="url"
 				/>
 				<Form.Label>Likes (optional):</Form.Label>
 				<Form.Control
 					type="text"
 					name="likes"
+					id="likes"
 				/>
 				<hr />
-				<Button variant="primary" type="submit">Save</Button> <Button type="reset" >Reset</Button>
+				<Button id="save" variant="primary" type="submit">Save</Button> <Button type="reset" >Reset</Button>
 			</Form.Group>
 		</Form>
 		</>

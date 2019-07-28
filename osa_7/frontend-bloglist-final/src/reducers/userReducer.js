@@ -1,3 +1,5 @@
+//Reducer and all of the action creators involving state.users
+
 import userService from "../services/users"
 
 export const addUser = newUser => {
@@ -5,17 +7,14 @@ export const addUser = newUser => {
 		const addedUser = await userService.create(newUser)
 		dispatch({
 			type: "ADD_USER",
-			data: {...addedUser,
-				user: {
-					username: newUser.user.username,
-					user: newUser.user.user,
-					id: newUser.user.id
-				}
-			}
+			data: addedUser
 		})
 	}
 }
 
+//This action creator for deleting users is not currently in use.
+//I considered making it possible for the user to delete their account,
+//but ultimately decided against it, as the blogs are heavily entwined with the users' data
 export const removeUser = deletableUser => {
 	return async dispatch => {
 		await userService.remove(deletableUser.id)
@@ -39,7 +38,7 @@ export const initialUsers = () => {
 const userReducer = (state = [], action) => {
 	switch (action.type) {
 	case "ADD_USER":
-		const userObject = {...action.data}
+		const userObject = action.data
 		return state.concat(userObject).sort((a, b) => {
 			return b.likes - a.likes
 		})

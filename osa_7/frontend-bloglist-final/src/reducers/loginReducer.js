@@ -1,3 +1,5 @@
+//Reducer and all of the action creators involving state.login
+
 import loginService from "../services/login"
 import blogService from "../services/blogs"
 

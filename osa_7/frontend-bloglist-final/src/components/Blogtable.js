@@ -3,6 +3,7 @@ import {Table, Button} from "react-bootstrap"
 import {connect} from "react-redux"
 import {Link} from "react-router-dom"
 
+//Component which displays the list of all blogs in a table
 const Blogtable = (props) => {
 
 	const [titleFilter, setTitleFilter] = useState("")
@@ -42,6 +43,7 @@ const Blogtable = (props) => {
 	const blogsToShow = (blogs) => {
 		//The structure of this component is absolute shit, but I'm too tired to think of anything cleaner
 
+		//If no filters, render every blog from store
 		if (titleFilter === "" && authorFilter === "") {
 			return (
 				<tbody>
@@ -61,6 +63,7 @@ const Blogtable = (props) => {
 		}
 
 		else {
+			//First, the title filter is applied
 			const titleFiltered = blogs.map(blog => {
 				const titleLower = blog.title.toLowerCase()
 				const titleSearch = titleLower.search(titleFilter.toLowerCase())
@@ -68,6 +71,7 @@ const Blogtable = (props) => {
 					return blog
 			}).filter(blog => blog !== undefined)
 
+			//Then the author filter after
 			const authorFiltered = titleFiltered.map(blog => {
 				const authorLower = blog.author.toLowerCase()
 				const titleSearch = authorLower.search(authorFilter.toLowerCase())
@@ -77,6 +81,7 @@ const Blogtable = (props) => {
 
 			return (
 				<tbody>
+					{/*Rendering of each blog that got past the filters*/}
 					{authorFiltered.map(blog => {
 						return (
 							<tr key={blog.id}>

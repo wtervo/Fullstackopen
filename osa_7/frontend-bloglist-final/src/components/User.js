@@ -3,6 +3,8 @@ import {Link} from "react-router-dom"
 import {Button, Table} from "react-bootstrap"
 import {connect} from "react-redux"
 
+
+//Component which displays the page of one user
 const User = (props) => {
 	const user = props.user
 

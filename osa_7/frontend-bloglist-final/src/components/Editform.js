@@ -5,7 +5,7 @@ import {errorChange} from "../reducers/errorReducer"
 import {notificationChange} from "../reducers/notificationReducer"
 import {vote, removeBlog, updateBlog} from "../reducers/blogReducer"
 
-
+//Component with which to edit some parts of existing blogs
 const Editform = (props) => {
 	const blog = props.blog
 

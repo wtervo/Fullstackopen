@@ -6,7 +6,7 @@ usersRouter.get("/", async (request, response) => {
 	const users = await User.find({}).populate(
 		"blogs", {title: 1, author: 1, url: 1, id: 1})
 	response.json(users.map(u => u.toJSON()))
-})
+}) //Populating blog data so the blogs added by each user are part of the JSON data
 
 usersRouter.get("/:id", async (request, response, next) => {
 	try {
@@ -26,22 +26,9 @@ usersRouter.get("/:id", async (request, response, next) => {
 usersRouter.post("/", async (request, response, next) => {
 	try {
 		const body = request.body
-		if (body.username === undefined || body.password === undefined) {
+		if (body.username === undefined || body.password === undefined || body.name === undefined) {
 			return response.status(400).json({error: "Content missing"})
 		}
-		else if (body.username.length < 3) {
-			return response.status(400).json({error: "Username is too short (min. 3 symbols)"})
-		}
-		else if (body.password.length < 3) {
-			return response.status(400).json({error: "Password is too short (min. 3 symbols)"})
-		}
-		else if (body.username.length > 20) {
-			return response.status(400).json({error: "Username is too long (max. 20 symbols)"})
-		}
-		else if (body.password.length > 25) {
-			return response.status(400).json({error: "Password is too long (max. 25 symbols)"})
-		}
-
 		const saltRounds = 10
 		const passwordHash = await bcrypt.hash(body.password, saltRounds)
 

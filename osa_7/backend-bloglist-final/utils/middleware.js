@@ -1,5 +1,7 @@
 const logger = require("./logger")
 
+//Middleware for error handling and token extraction
+
 const tokenExtractor = (request, response, next) => {
 	const authorization = request.get("authorization")
 	if (authorization && authorization.toLowerCase().startsWith("bearer ")) {

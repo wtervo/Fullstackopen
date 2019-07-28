@@ -3,6 +3,7 @@ const baseUrl = "/api/blogs/"
 
 let token = null
 
+//This function is called on login so that the token is saved
 const setToken = newToken => {
 	token = `bearer ${newToken}`
 }

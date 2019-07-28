@@ -45,6 +45,7 @@ blogsRouter.get("/:id/comments", async (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
 	const body = request.body
 	try {
+		//Verification of the user's token
 		const decodedToken = jwt.verify(request.token, process.env.SECRET)
 		if (!request.token || !decodedToken.id) {
 			return response.status(401).json({error: "Token missing or invalid"})
@@ -94,7 +95,7 @@ blogsRouter.delete("/:id", async (request, response, next) => {
 })
 
 blogsRouter.put("/:id", async (request, response, next) => {
-	//PUT would ideally need much more error testing, as it sidesteps the error checks in place for POST
+	//PUT would ideally need much more error testing, as it sidesteps the error checks which are in place for POST
 	//I'm too lazy to implement all of those for this project, but I tried to make it so that the limits
 	//cannot be broken from frontend
 	const body = request.body

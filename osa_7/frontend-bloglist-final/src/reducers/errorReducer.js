@@ -1,3 +1,5 @@
+//Reducer and all of the action creators involving state.errors
+
 const errorAtStart = null
 
 export const errorChange = (errorMsg, displayTime) => {

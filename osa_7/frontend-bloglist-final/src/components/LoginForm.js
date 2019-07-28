@@ -6,6 +6,7 @@ import {errorChange} from "../reducers/errorReducer"
 import {notificationChange} from "../reducers/notificationReducer"
 import {withRouter} from "react-router-dom"
 
+//Component which displays the login form and handles its submissions
 const LoginForm = (props) => {
 
 	const submitHandler = async (event) => {
@@ -13,7 +14,6 @@ const LoginForm = (props) => {
 		const username = event.target[0].value
 		const password = event.target[1].value
 		event.target[1].value = ""
-		console.log("Logging in with", username, password)
 		try {
 			await props.changeLogin(username, password)
 			props.notificationChange(`Successfully logged in. Welcome back, ${username}!`, 5)
@@ -42,7 +42,7 @@ const LoginForm = (props) => {
 					type="password"
 				/>
 				<hr />
-				<Button variant="primary" type="submit">Login</Button> <Button type="reset" >Reset</Button>
+				<Button id="loginbutton" variant="primary" type="submit">Login</Button> <Button type="reset" >Reset</Button>
 			</Form.Group>
 		</Form>
 		</>

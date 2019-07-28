@@ -8,6 +8,12 @@ import {notificationChange} from "../reducers/notificationReducer"
 import {vote, removeBlog, updateBlog} from "../reducers/blogReducer"
 import {Link, withRouter} from "react-router-dom"
 
+//Component which displays the page for a single blog and handles all the actions
+//possible in its
+
+//This component turned up way too bloated and complicated
+//Should slice it into smaller components, but I'm sure I will break everything if I do so
+
 const Blog = (props) => {
 	const blog = props.blog
 	const blogStyle = {
@@ -46,8 +52,11 @@ const Blog = (props) => {
 			commentArray(blog)
 		}
 	}, [blog, props.notification, props.error])
+	//Comments are loaded when blog is found (on first load) and when notification/error change
+	//ie. when adding comments or editing the blog
 
 	const deleteAndEditButtons = (blog) => {
+		//The buttons are only visible to the user that added the blog in question
 		const loggedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"))
 		if (loggedUser.username === blog.user.username) {
 			return(
@@ -91,7 +100,7 @@ const Blog = (props) => {
 		try {
 			await props.updateBlog(blogObject)
 			props.notificationChange("Comment added!", 5)
-			setComments(previousComments.concat(newComment))
+			setComments(previousComments.concat(newComment)) //This hook updates the front's bloglist after a comment has been added
 			setCommentBoxVisible(false)
 		}
 		catch {
@@ -105,6 +114,8 @@ const Blog = (props) => {
 	}
 
 	const commentBox = () => {
+		//Comment box is not visible until a button has been pressed
+		//Automatically hides when a comment has been submitted
 		const hideWhenVisible = {display: commentBoxVisible ? "none" : ""}
 		const showWhenVisible = {display: commentBoxVisible ? "" : "none"}
 		return(

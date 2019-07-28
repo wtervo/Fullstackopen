@@ -12,13 +12,10 @@ const get = user => {
 	return response.data
 }
 
-// const create = async newObject => {
-// 	const config = {
-// 		headers: {Authorization: token}
-// 	}
-// 	const response = await axios.post(baseUrl, newObject, config)
-// 	return response.data
-// }
+const create = async newObject => {
+	const response = await axios.post(baseUrl, newObject)
+	return response.data
+}
 
 const update = async updatedObject => {
 	const response = await axios.put(baseUrl + updatedObject.id, updatedObject)
@@ -26,4 +23,4 @@ const update = async updatedObject => {
 }
 
 
-export default {getAll, get, update}
+export default {getAll, get, create, update}

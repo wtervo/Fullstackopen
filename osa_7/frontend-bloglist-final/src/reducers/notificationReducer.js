@@ -1,3 +1,5 @@
+//Reducer and all of the action creators involving state.notification
+
 const notificationAtStart = null
 
 export const notificationChange = (notificationMsg, displayTime) => {

@@ -11,25 +11,25 @@
 
 # delete http://localhost:3003/api/blogs/5d29b675f4be3936485e0dd5
 
-put http://localhost:3003/api/blogs/5d2db776366061473404cd50
-Content-Type: application/json
-
-{
-    "title": "kaljaa on monenlaista",
-    "author": "kaljamies",
-    "url": "www.kalja.fi",
-    "likes": 23783736321624,
-    "comments": ["kalja!"]
-}
-
-# post http://localhost:3003/api/users
+# put http://localhost:3003/api/blogs/5d2db776366061473404cd50
 # Content-Type: application/json
 
 # {
-#     "username": "salla",
-#     "name": "SALLA-MARI HIHI",
-#     "password": "portsit"
+#     "title": "kaljaa on monenlaista",
+#     "author": "kaljamies",
+#     "url": "www.kalja.fi",
+#     "likes": 23783736321624,
+#     "comments": ["kalja!"]
 # }
+
+post http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "sadg",
+    "name": "sadga",
+    "password": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
 
 # post http://localhost:3003/api/blogs
 # Content-Type: application/json

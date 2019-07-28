@@ -3,6 +3,8 @@ import {connect} from "react-redux"
 import {Link} from "react-router-dom"
 import {Table} from "react-bootstrap"
 
+//Component which displays the home page
+//Includes several subcomponents, which show most popular blogs etc.
 const Home = (props) => {
 
 	const topFive = (blogs) => {
@@ -35,6 +37,9 @@ const Home = (props) => {
 		const sortedUsers = users.sort((a, b) => {
 			return b.blogs.length - a.blogs.length
 		})
+		//Found it simpler to get the top user by .sort instead of Math.max() or similar
+		//This component should be improved so that is shows multiple users if there are more than one
+		//users with the same amount of added blogs as now it only shows the one which is first alphabetically
 		const topUser = sortedUsers[0]
 
 		if (topUser === undefined) {
@@ -46,13 +51,17 @@ const Home = (props) => {
 	}
 
 	const randomComments = (blogs) => {
+		//Filter to an array with only blogs that have comments
 		const blogsWithComments = blogs.filter(blog => blog.comments.length !== 0)
 		const randomNumMax1 = blogsWithComments.length
+		//Randomly choose one of the blogs
 		const chosenBlog = Math.floor(Math.random() * randomNumMax1)
+		//This if statement is to prevent crashing if blogs have not yet been loaded from store
 		if (blogsWithComments[chosenBlog] === undefined) {
 			return null
 		}
 		const randomNumMax2 = blogsWithComments[chosenBlog].comments.length
+		//Randomly choose one of the comments in the chosen blog
 		const chosenComment = Math.floor(Math.random() * randomNumMax2)
 		const randomComment = blogsWithComments[chosenBlog].comments[chosenComment]
 		if (randomComment === undefined) {
@@ -87,6 +96,7 @@ const Home = (props) => {
 				<br />
 				<Table>
 					<tbody>
+						{/*Each randomComments render produces independent, (hopefully) different results*/}
 						{randomComments(props.blogs)}
 						{randomComments(props.blogs)}
 						{randomComments(props.blogs)}
